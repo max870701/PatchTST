@@ -27,7 +27,7 @@ do
       --features M \
       --seq_len $seq_len \
       --pred_len $pred_len \
-      --enc_in 3 \
+      --enc_in 5 \
       --e_layers 3 \
       --n_heads 4 \
       --d_model 16 \
@@ -40,5 +40,6 @@ do
       --des 'Exp' \
       --train_epochs 100\
       --lradj 'constant'\
+      --target 'Target' \
       --itr 1 --batch_size 16 --learning_rate 0.0025 >logs/LongForecasting/$model_name'_'$model_id_name'_'$seq_len'_'$pred_len.log 
 done

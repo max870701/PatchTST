@@ -40,5 +40,6 @@ do
       --des 'Exp' \
       --train_epochs 100\
       --lradj 'constant'\
+      --target 'Adj Close' \
       --itr 1 --batch_size 16 --learning_rate 0.0025 >logs/LongForecasting/$model_name'_'$model_id_name'_'$seq_len'_'$pred_len.log 
 done

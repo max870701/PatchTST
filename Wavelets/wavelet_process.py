@@ -44,8 +44,7 @@ if __name__ == '__main__':
     sym_lv2_df = wrangle(df.copy(), level=2, wavelet='sym2')
     sym_lv3_df = wrangle(df.copy(), level=3, wavelet='sym2')
 
-    target = 'Target'
-    drop_cols = [target, 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+    drop_cols = ['Open', 'High', 'Low', 'Close', 'Volume']
 
     # drop the columns
     db_lv2_df.drop(columns=drop_cols, axis=1, inplace=True)
