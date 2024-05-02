@@ -9,12 +9,12 @@ seq_len=84
 model_name=PatchTST
 
 root_path_name=./dataset/
-data_path_name=sym_lv2.csv
-model_id_name=sp500-symlet-level2
+data_path_name=db_lv3.csv
+model_id_name=sp500-daubechies-level3
 data_name=custom
 
 random_seed=2024
-for pred_len in 7 14 21 28
+for pred_len in 7 28
 do
     echo 'Training '$model_id_name' for '$pred_len' period'
     python -u run_longExp.py \
@@ -28,7 +28,7 @@ do
       --features M \
       --seq_len $seq_len \
       --pred_len $pred_len \
-      --enc_in 5 \
+      --enc_in 6 \
       --e_layers 3 \
       --n_heads 4 \
       --d_model 16 \

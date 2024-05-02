@@ -9,8 +9,8 @@ seq_len=84
 model_name=PatchTST
 
 root_path_name=./dataset/
-data_path_name=sym_lv2.csv
-model_id_name=sp500-symlet-level2
+data_path_name=db_lv2.csv
+model_id_name=sp500-daubechies-level2
 data_name=custom
 
 random_seed=2024

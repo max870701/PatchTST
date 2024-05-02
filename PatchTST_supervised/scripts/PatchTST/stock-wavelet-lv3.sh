@@ -8,7 +8,7 @@ fi
 seq_len=84
 model_name=PatchTST
 
-root_path_name=./
+root_path_name=./dataset/
 data_path_name=sym_lv3.csv
 model_id_name=sp500-symlet-level3
 data_name=custom
@@ -16,6 +16,7 @@ data_name=custom
 random_seed=2024
 for pred_len in 7 14 21 28
 do
+    echo 'Training '$model_id_name' for '$pred_len' period'
     python -u run_longExp.py \
       --random_seed $random_seed \
       --is_training 1 \

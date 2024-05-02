@@ -14,8 +14,10 @@ model_id_name=sp500
 data_name=custom
 
 random_seed=2024
+
 for pred_len in 7 14 21 28
 do
+    echo 'Training '$model_id_name' for '$pred_len' period'
     python -u run_longExp.py \
       --random_seed $random_seed \
       --is_training 1 \
@@ -40,6 +42,6 @@ do
       --des 'Exp' \
       --train_epochs 100\
       --lradj 'constant'\
-      --target 'Adj Close' \
+      --target 'AdjClose' \
       --itr 1 --batch_size 16 --learning_rate 0.0025 >logs/LongForecasting/$model_name'_'$model_id_name'_'$seq_len'_'$pred_len.log 
 done
