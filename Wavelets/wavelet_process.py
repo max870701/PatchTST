@@ -2,16 +2,22 @@ import pywt
 import pandas as pd
 
 
-def mra(df, level, wavelet='db2'):
-    # Mutli-resolution analysis
-    coeffs = pywt.wavedec(df['Adj Close'], wavelet, level=level)
+def discrete_decomposition(df, level, wavelet='db1'):
+    # Extract closing prices assuming the relevant data is in a column named 'Close'
+    closing_prices = df['AdjClose']  
 
-    # Create a new dataframe
-    for i in range(len(coeffs)):
-        if i == 0:
-            df[f'A{i}'] = list(coeffs[i]) + [None] * (len(df) - len(coeffs[i]))
-        else:
-            df[f'D{i}'] = [None] * (len(df) - len(coeffs[i])) + list(coeffs[i])
+    # Decompose the signal
+    coeffs = pywt.wavedec(closing_prices, wavelet, level=level)
+
+    # Separate approximation and detail coefficients
+    approx_coeffs = coeffs[0]
+    detail_coeffs = coeffs[1:]
+
+    # Generate a dataframe with the approximation and detail coefficients
+    # Upsample the coefficients to match the length of the original data
+    df['Approx'] = pywt.upcoef('a', approx_coeffs, wavelet, level=level, take=len(closing_prices))
+    for i, detail_coeff in enumerate(detail_coeffs):
+        df[f'D{i+1}'] = pywt.upcoef('d', detail_coeff, wavelet, level=level, take=len(closing_prices))
 
     return df
 
@@ -21,15 +27,16 @@ def get_null_cols(df):
 
 def fillna_numerical(df, cols):
     for col in cols:
-        value = df[col].mode()[0]
-        df[col].fillna(value, inplace=True)
+        value = df[col].mode().get(0, df[col].iloc[0])  # Default to the first item if mode is empty
+        df[col] = df[col].fillna(value)
     return df
 
 def wrangle(df, level, wavelet='sym2'):
-    new_df = mra(df, level, wavelet)
+    new_df = discrete_decomposition(df, level, wavelet)
+    # print(new_df.head())
     null_cols = get_null_cols(new_df)
     new_df = fillna_numerical(new_df, null_cols)
-    new_df['Target'] = new_df['Adj Close'].shift(-1)
+    new_df['Target'] = new_df['AdjClose'].shift(-1)
     return new_df
 
 
@@ -37,8 +44,8 @@ if __name__ == '__main__':
     df = pd.read_csv('sp500.csv')
 
     # Decompose the data using the db2 wavelet in level 2 and 3
-    db_lv2_df = wrangle(df.copy(), level=2, wavelet='db2')
-    db_lv3_df = wrangle(df.copy(), level=3, wavelet='db2')
+    db_lv2_df = wrangle(df.copy(), level=2, wavelet='db1')
+    db_lv3_df = wrangle(df.copy(), level=3, wavelet='db1')
 
     # Decompose the data using the sym2 wavelet in level 2 and 3
     sym_lv2_df = wrangle(df.copy(), level=2, wavelet='sym2')
