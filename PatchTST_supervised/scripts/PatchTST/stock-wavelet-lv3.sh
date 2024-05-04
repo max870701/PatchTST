@@ -5,7 +5,7 @@ fi
 if [ ! -d "./logs/LongForecasting" ]; then
     mkdir ./logs/LongForecasting
 fi
-seq_len=84
+seq_len=60
 model_name=PatchTST
 
 root_path_name=./dataset/
@@ -14,7 +14,7 @@ model_id_name=sp500-symlet-level3
 data_name=custom
 
 random_seed=2024
-for pred_len in 7 14 21 28
+for pred_len in 5 10 20
 do
     echo 'Training '$model_id_name' for '$pred_len' period'
     python -u run_longExp.py \
@@ -36,7 +36,7 @@ do
       --dropout 0.2\
       --fc_dropout 0.2\
       --head_dropout 0\
-      --patch_len 30\
+      --patch_len 5\
       --stride 2\
       --des 'Exp' \
       --train_epochs 100\

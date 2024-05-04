@@ -44,25 +44,59 @@ if __name__ == '__main__':
     df = pd.read_csv('sp500.csv')
 
     # Decompose the data using the db2 wavelet in level 2 and 3
-    db_lv2_df = wrangle(df.copy(), level=2, wavelet='db1')
-    db_lv3_df = wrangle(df.copy(), level=3, wavelet='db1')
+    haar_lv2_df = wrangle(df.copy(), level=2, wavelet='db1')
+    haar_lv3_df = wrangle(df.copy(), level=3, wavelet='db1')
+    haar_lv4_df = wrangle(df.copy(), level=4, wavelet='db1')
 
     # Decompose the data using the sym2 wavelet in level 2 and 3
     sym_lv2_df = wrangle(df.copy(), level=2, wavelet='sym2')
     sym_lv3_df = wrangle(df.copy(), level=3, wavelet='sym2')
+    sym_lv4_df = wrangle(df.copy(), level=4, wavelet='sym2')
+
+    # Decompose the data using the db2 wavelet in level 2 and 3
+    db_lv2_df = wrangle(df.copy(), level=2, wavelet='db2')
+    db_lv3_df = wrangle(df.copy(), level=3, wavelet='db2')
+    db_lv4_df = wrangle(df.copy(), level=4, wavelet='db2')
 
     drop_cols = ['Open', 'High', 'Low', 'Close', 'Volume']
 
     # drop the columns
-    db_lv2_df.drop(columns=drop_cols, axis=1, inplace=True)
-    db_lv3_df.drop(columns=drop_cols, axis=1, inplace=True)
+    haar_lv2_df.drop(columns=drop_cols, axis=1, inplace=True)
+    haar_lv3_df.drop(columns=drop_cols, axis=1, inplace=True)
+    haar_lv4_df.drop(columns=drop_cols, axis=1, inplace=True)
 
     sym_lv2_df.drop(columns=drop_cols, axis=1, inplace=True)
     sym_lv3_df.drop(columns=drop_cols, axis=1, inplace=True)
+    sym_lv4_df.drop(columns=drop_cols, axis=1, inplace=True)
+
+    db_lv2_df.drop(columns=drop_cols, axis=1, inplace=True)
+    db_lv3_df.drop(columns=drop_cols, axis=1, inplace=True)
+    db_lv4_df.drop(columns=drop_cols, axis=1, inplace=True)
 
     # Save the dataframe to csv
-    db_lv2_df.to_csv('db_lv2.csv', index=False)
-    db_lv3_df.to_csv('db_lv3.csv', index=False)
+    haar_lv2_df.to_csv('haar_lv2.csv', index=False)
+    haar_lv3_df.to_csv('haar_lv3.csv', index=False)
+    haar_lv4_df.to_csv('haar_lv4.csv', index=False)
+
     sym_lv2_df.to_csv('sym_lv2.csv', index=False)
     sym_lv3_df.to_csv('sym_lv3.csv', index=False)
+    sym_lv4_df.to_csv('sym_lv4.csv', index=False)
 
+    db_lv2_df.to_csv('db_lv2.csv', index=False)
+    db_lv3_df.to_csv('db_lv3.csv', index=False)
+    db_lv4_df.to_csv('db_lv4.csv', index=False)
+
+    # Decompose sym2 wavelet in level 10
+    sym_lv10_df = wrangle(df.copy(), level=10, wavelet='sym2')
+    sym_lv10_df.drop(columns=drop_cols, axis=1, inplace=True)
+    sym_lv10_df.to_csv('sym_lv10.csv', index=False)
+
+    # Decompose db2 wavelet in level 10
+    db_lv10_df = wrangle(df.copy(), level=10, wavelet='db2')
+    db_lv10_df.drop(columns=drop_cols, axis=1, inplace=True)
+    db_lv10_df.to_csv('db_lv10.csv', index=False)
+
+    # Decompose haar wavelet in level 10
+    haar_lv10_df = wrangle(df.copy(), level=10, wavelet='db1')
+    haar_lv10_df.drop(columns=drop_cols, axis=1, inplace=True)
+    haar_lv10_df.to_csv('haar_lv10.csv', index=False)

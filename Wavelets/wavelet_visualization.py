@@ -2,25 +2,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-if __name__ == "__main__":
-    # Visualizing the signal time series in a dataframe
-    df = pd.read_csv('db_lv2.csv')
-
+def plot_raw_and_wavelet(wavelet_df, wavelet_name, level):
     # Create a 2x2 grid of subplots
     fig, ax = plt.subplots(2, 2, figsize=(15, 10))
 
     # Plot the original signal, approximation, and detail coefficients
-    df['AdjClose'].plot(ax=ax[0, 0], title='Original Signal')
-    df['Approx'].plot(ax=ax[0, 1], title='Approximation Coefficients')
-    df['D1'].plot(ax=ax[1, 0], title='Detail Coefficients D1')
-    df['D2'].plot(ax=ax[1, 1], title='Detail Coefficients D2')
+    wavelet_df['AdjClose'].plot(ax=ax[0, 0], title='Original Signal')
+    wavelet_df['Approx'].plot(ax=ax[0, 1], title='Approximation Coefficients')
 
-    # Calculate the MSE and MAE between the original signal and the approximation
-    mse = ((df['AdjClose'] - df['Approx']) ** 2).mean()
-    mae = (df['AdjClose'] - df['Approx']).abs().mean()
+    for i in range(level):
+        wavelet_df[f'D{i+1}'].plot(ax=ax[1, i], title=f'Detail Coefficients D{i+1}')
 
-    print(f'MSE: {mse:.2f}')
-    print(f'MAE: {mae:.2f}')
+    # Set the title of the plot
+    fig.suptitle(f'Using {wavelet_name} Wavelet at Level {level}')
+
+    # Show the MSE, MAE on the plot
+    mse = ((wavelet_df['AdjClose'] - wavelet_df['Approx']) ** 2).mean()
+    mae = (wavelet_df['AdjClose'] - wavelet_df['Approx']).abs().mean()
+
+    # Display the MSE and MAE on the plot
+    fig.text(0.5, 0.05, f'MSE: {mse:.2f}', ha='center')
+    fig.text(0.5, 0.02, f'MAE: {mae:.2f}', ha='center')
 
     # Display the plot
-    # plt.show()
+    plt.show()
+
+
+if __name__ == "__main__":
+    # Visualizing the signal time series in a dataframe
+    df = pd.read_csv('haar_lv2.csv')
+
+    # Plot the raw signal and wavelet coefficients
+    plot_raw_and_wavelet(
+        wavelet_df=df,
+        wavelet_name='db1',
+        level=2
+    )
