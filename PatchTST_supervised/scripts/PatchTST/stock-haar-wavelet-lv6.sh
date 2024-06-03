@@ -14,7 +14,7 @@ model_id_name=sp500-haar-level6
 data_name=custom
 
 random_seed=2024
-for pred_len in 5 10 20
+for pred_len in 1
 do
     echo 'Training '$model_id_name' for '$pred_len' period'
     python -u run_longExp.py \
